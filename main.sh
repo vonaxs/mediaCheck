@@ -39,14 +39,26 @@ isIPChanged() {
     oidIP=$(cat /root/mediaCheck/ip.txt)
     newIP=$(curl ip.sb)
     if [[ -n $oidIP ]]; then
-	if [[ $oidIP != $newIP ]]; then
-            sudo sh -c "echo $newIP > $ip_file"
-            sudo sh -c "echo \$(date)：IP发生了改变，检测新的IP是否可以解锁媒体... >> $log_file"
-            checkIP
-	fi
+		if [[ $oidIP != $newIP ]]; then
+			sudo sh -c "echo $newIP > $ip_file"
+			sudo sh -c "echo \$(date)：IP发生了改变，检测新的IP是否可以解锁媒体... >> $log_file"
+			checkIP
+		fi
     else
-	sudo sh -c "echo $newIP > $ip_file"
+		sudo sh -c "echo $newIP > $ip_file"
     fi
+}
+
+# 检测日志是否太大，如果太大，则清空
+clearLog() {
+	if [ -e "$log_file" ]; then
+		line_count=$(wc -l < "$log_file")		# 获取文件行数
+		if [ "$line_count" -gt "$threshold" ]; then
+			sudo sh -c "echo -n > $log_file"  # 清空文件
+		fi
+	else
+		sudo touch "$log_file"
+	fi
 }
 
 if [[ "$1" == "isIPChanged" ]]; then
@@ -57,6 +69,7 @@ elif [[ "$1" == "check" ]]; then
     checkIP
 elif [[ "$1" == "change" ]]; then
     echo "执行更换任务，准备更换IP..."
+	clearLog
     changeIP
 elif [[ "$1" == "install" ]]; then
     # 检查是否已经安装了curl
