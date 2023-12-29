@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+log_file="/root/mediaCheck/change.log"
+threshold=100
+
 # 更换IP
 changeIP() {
     api=$(cat /root/mediaCheck/.api)
@@ -8,7 +11,18 @@ changeIP() {
         result=$(curl -s "$api")
         if echo "$result" | grep -q '"ok":true'; then
             echo "更换成功: $result"
-            sudo sh -c "echo \$(date): 更换成功 >> /root/mediaCheck/change.log"
+
+			# 获取文件行数
+			line_count=$(wc -l < "$log_file")
+
+			# 如果行数超过阈值，覆盖文件
+			if [ "$line_count" -gt "$threshold" ]; then
+				echo "行数超过 $threshold，文件将被覆盖。"
+				sudo sh -c "echo \$(date): 更换成功 > $log_file"
+			else
+				sudo sh -c "echo \$(date): 更换成功 >> $log_file"
+			fi
+
             if [ $(checkIP) == 0 ]; then
                 break  # 更换IP成功
             fi
