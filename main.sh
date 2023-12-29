@@ -31,7 +31,7 @@ changeIP() {
 		echo "新的IP: $newIP"
 		sudo sh -c "echo \$(date)：新的IP：$newIP >> $log_file"
 		for ((x = 0; x < 5; x++)); do
-			if [[ "$oldIP" != "$newIP" ]]; then
+        	if [[ "$oldIP" != "$newIP" ]]; then
 				if [[ $(checkIP) == 0 ]]; then
 					break 2  # 更换IP成功
 				else
