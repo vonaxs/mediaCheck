@@ -39,26 +39,26 @@ isIPChanged() {
     oidIP=$(cat /root/mediaCheck/ip.txt)
     newIP=$(curl ip.sb)
     if [[ -n $oidIP ]]; then
-		if [[ $oidIP != $newIP ]]; then
-			sudo sh -c "echo $newIP > $ip_file"
-			sudo sh -c "echo \$(date)：IP发生了改变，检测新的IP是否可以解锁媒体... >> $log_file"
-			checkIP
-		fi
+	if [[ $oidIP != $newIP ]]; then
+            sudo sh -c "echo $newIP > $ip_file"
+            sudo sh -c "echo \$(date)：IP发生了改变，检测新的IP是否可以解锁媒体... >> $log_file"
+            checkIP
+	fi
     else
-		sudo sh -c "echo $newIP > $ip_file"
+	sudo sh -c "echo $newIP > $ip_file"
     fi
 }
 
 # 检测日志是否太大，如果太大，则清空
 clearLog() {
-	if [ -e "$log_file" ]; then
-		line_count=$(wc -l < "$log_file")		# 获取文件行数
-		if [ "$line_count" -gt "$threshold" ]; then
-			sudo sh -c "echo -n > $log_file"  # 清空文件
-		fi
-	else
-		sudo touch "$log_file"
-	fi
+    if [ -e "$log_file" ]; then
+        line_count=$(wc -l < "$log_file")		# 获取文件行数
+        if [ "$line_count" -gt "$threshold" ]; then
+            sudo sh -c "echo -n > $log_file"  # 清空文件
+        fi
+    else
+        sudo touch "$log_file"
+    fi
 }
 
 if [[ "$1" == "isIPChanged" ]]; then
@@ -97,10 +97,10 @@ elif [[ "$1" == "install" ]]; then
     sudo touch /root/mediaCheck/.api
     sudo touch /root/mediaCheck/ip.txt
     echo "$api" | sudo tee /root/mediaCheck/.api > /dev/null
-	if [ -z "$(crontab -l)" ]; then
-		(echo "*/5 * * * * /root/mediaCheck/main.sh 'isIPChanged'") | crontab -
+    if [ -z "$(crontab -l)" ]; then
+        (echo "*/5 * * * * /root/mediaCheck/main.sh 'isIPChanged'") | crontab -
     else
-		(crontab -l ; echo "*/5 * * * * /root/mediaCheck/main.sh 'isIPChanged'") | crontab -
+        (crontab -l ; echo "*/5 * * * * /root/mediaCheck/main.sh 'isIPChanged'") | crontab -
     fi
 	(crontab -l ; echo "0 0 * * * /root/mediaCheck/main.sh 'change'") | crontab -
 	(crontab -l ; echo "0 * * * * /root/mediaCheck/main.sh 'check'") | crontab -
