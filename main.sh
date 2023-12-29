@@ -13,37 +13,35 @@ changeIP() {
     for ((i = 0; i < 5; i++)); do
         result=$(curl -s "$api")
         if echo "$result" | grep -q '"ok":true'; then
-		echo "更换成功: $result"
-	
-		# 获取文件行数
-		line_count=$(wc -l < "$log_file")
-	
-		# 如果行数超过阈值，覆盖文件
-		if [ "$line_count" -gt "$threshold" ]; then
-			echo "行数超过 $threshold，文件将被覆盖。"
-			sudo sh -c "echo \$(date)：更换成功 > $log_file"
-		else
-			sudo sh -c "echo \$(date)：更换成功 >> $log_file"
-		fi
+			sudo sh -c "echo \$(date)：更换成功: $result >> $log_file"
 		
-		#输出当前的IP
-		newIP=$(curl ip.sb)
-		echo "新的IP: $newIP"
-		sudo sh -c "echo \$(date)：新的IP：$newIP >> $log_file"
-		for ((x = 0; x < 5; x++)); do
-			if [[ "$oldIP" != "$newIP" ]]; then
-				if [[ $(checkIP) == 0 ]]; then
-					break 2  # 更换IP成功
-				else
-					echo "IP无法解锁，再次尝试更换...：$result"
-					sleep 60  # 在重试前等待一段时间
-				fi
+			# 获取文件行数
+			line_count=$(wc -l < "$log_file")
+		
+			# 如果行数超过阈值，覆盖文件
+			if [ "$line_count" -gt "$threshold" ]; then
+				sudo sh -c "echo \$(date)：行数超过 $threshold，文件将被覆盖。 > $log_file"
+				sudo sh -c "echo \$(date)：更换成功 >> $log_file"
+			else
+				sudo sh -c "echo \$(date)：更换成功 >> $log_file"
 			fi
-			sleep 10
-		done
+			
+			#输出当前的IP
+			newIP=$(curl ip.sb)
+			sudo sh -c "echo \$(date)：新的IP：$newIP >> $log_file"
+			for ((x = 0; x < 5; x++)); do
+				if [[ "$oldIP" != "$newIP" ]]; then
+					if [[ $(checkIP) == 0 ]]; then
+						break 2  # 更换IP成功
+					else
+						sudo sh -c "echo \$(date)：IP无法解锁，再次尝试更换... >> $log_file"
+						sleep 60  # 在重试前等待一段时间
+					fi
+				fi
+				sleep 10
+			done
         else
-            echo "更换失败，等待下次尝试...：$result"
-            sudo sh -c "echo \$(date): 更换失败 >> /root/mediaCheck/change.log"
+            sudo sh -c "echo \$(date): 更换失败，等待下次尝试... >> /root/mediaCheck/change.log"
             sleep 60  # 在重试前等待一段时间
         fi
     done
@@ -54,6 +52,7 @@ checkIP() {
     # 访问此网址，如果无法观看非自制剧，会返回"Netflix"
     title=$(curl -s https://www.netflix.com/tw/title/70143836 | grep -oP '<title>\K[^<]*')
     if [[ $title == 'Netflix' ]]; then
+		sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
         echo "当前IP无法解锁Netflix，准备更换IP..."
         changeIP
         return 0  # 返回成功
