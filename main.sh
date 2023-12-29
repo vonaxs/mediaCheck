@@ -9,14 +9,17 @@ changeIP() {
         if echo "$result" | grep -q '"ok":true'; then
             echo "更换成功: $result"
             sudo sh -c "echo \$(date): 更换成功 >> /root/changeIP/change.log"
+	    #等待10秒钟，检测新IP是否可以解锁媒体，如果解锁成功，则退出循环
             sleep 10
             if [ $(checkIP) == 0 ]; then
                 break  # 更换IP成功
+            else
+                sleep 30
             fi
         else
             echo "更换失败，等待10S进行下次尝试...: $result"
             sudo sh -c "echo \$(date): 更换失败 >> /root/changeIP/change.log"
-            sleep 10
+            sleep 30
         fi
     done
 }
