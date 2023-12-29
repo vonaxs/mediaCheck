@@ -25,11 +25,11 @@ checkIP() {
     # 访问此网址，如果无法观看非自制剧，会返回"Netflix"
     title=$(curl -s https://www.netflix.com/tw/title/70143836 | grep -oP '<title>\K[^<]*')
     if [[ $title == 'Netflix' ]]; then
-		sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
+	sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
         echo "当前IP无法解锁Netflix，准备更换IP..."
         changeIP
     else
-		sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
+	sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
         echo "当前IP可以解锁Netflix，无需更换IP..."
     fi
 }
@@ -52,12 +52,12 @@ isIPChanged() {
 # 检测日志是否太大，如果太大，则清空
 clearLog() {
 	if [ -e "$log_file" ]; then
-	    line_count=$(wc -l < "$log_file")		# 获取文件行数
-	    if [ "$line_count" -gt "$threshold" ]; then
+		line_count=$(wc -l < "$log_file")		# 获取文件行数
+		if [ "$line_count" -gt "$threshold" ]; then
 			sudo sh -c "echo -n > $log_file"  # 清空文件
-	    fi
+		fi
 	else
-	    sudo touch "$log_file"
+		sudo touch "$log_file"
 	fi
 }
 
@@ -69,7 +69,7 @@ elif [[ "$1" == "check" ]]; then
     checkIP
 elif [[ "$1" == "change" ]]; then
     echo "执行更换任务，准备更换IP..."
-    clearLog
+	clearLog
     changeIP
 elif [[ "$1" == "install" ]]; then
     # 检查是否已经安装了curl
