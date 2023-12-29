@@ -97,7 +97,14 @@ elif [[ "$1" == "install" ]]; then
     sudo touch /root/mediaCheck/.api
     sudo touch /root/mediaCheck/ip.txt
     echo "$api" | sudo tee /root/mediaCheck/.api > /dev/null
-    echo "API已经保存，安装完成"
+	if [ -z "$(crontab -l)" ]; then
+		(echo "*/5 * * * * /root/mediaCheck/main.sh 'isIPChanged'") | crontab -
+    else
+		(crontab -l ; echo "*/5 * * * * /root/mediaCheck/main.sh 'isIPChanged'") | crontab -
+    fi
+	(crontab -l ; echo "0 0 * * * /root/mediaCheck/main.sh 'change'") | crontab -
+	(crontab -l ; echo "0 * * * * /root/mediaCheck/main.sh 'check'") | crontab -
+    echo "安装完成"
 else
     echo "脚本参数不正确，退出脚本。"
 fi
