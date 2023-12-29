@@ -35,7 +35,7 @@ checkIP() {
 }
 
 # 检测IP是否更换，如果IP发生了改变，检测新的IP是否可以解锁媒体
-isIPchanged() {
+isIPChanged() {
     oidIP=$(cat /root/mediaCheck/ip.txt)
     newIP=$(curl ip.sb)
     if [[ -n $oidIP ]]; then
