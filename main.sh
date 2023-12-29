@@ -13,7 +13,7 @@ changeIP() {
     for ((i = 0; i < 5; i++)); do
         result=$(curl -s "$api")
         if ! echo "$result" | grep -q '"ok":true'; then
-            sudo sh -c "echo \$(date): 更换失败，等待 60 秒后重试... >> $log_file"
+            sudo sh -c "echo \$(date): 更换失败，等待 60 秒后重试... \$result" >> $log_file
             sleep 60 
         fi
     done
