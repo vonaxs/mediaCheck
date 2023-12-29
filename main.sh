@@ -39,13 +39,13 @@ isIPchanged() {
     oidIP=$(cat /root/mediaCheck/ip.txt)
 	newIP=$(curl ip.sb)
     if [[ -n $oidIP ]]; then
-	    if [[ $oidIP != $newIP ]]; then
-			sudo sh -c "echo \$(date)：$newIP > $ip_file"
-			sudo sh -c "echo \$(date)：IP发生了改变，检测新的IP是否可以解锁媒体... >> $log_file"
-	        checkIP
-	    fi
-	else
-		sudo sh -c "echo \$(date)：$newIP > $ip_file"
+	if [[ $oidIP != $newIP ]]; then
+            sudo sh -c "echo \$(date)：$newIP > $ip_file"
+            sudo sh -c "echo \$(date)：IP发生了改变，检测新的IP是否可以解锁媒体... >> $log_file"
+            checkIP
+	fi
+    else
+	sudo sh -c "echo \$(date)：$newIP > $ip_file"
     fi
 }
 
