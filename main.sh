@@ -2,7 +2,7 @@
 set -e
 
 log_file="/root/mediaCheck/change.log"
-threshold=100
+threshold=100	# 如果行数超过阈值，覆盖文件
 
 # 更换IP
 changeIP() {
