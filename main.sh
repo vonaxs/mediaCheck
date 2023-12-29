@@ -6,25 +6,38 @@ changeIP() {
     api=$(cat /root/changeIP/.api)
     for ((i = 0; i < 5; i++)); do
         result=$(curl -s "$api")
-        if echo "$result" | grep -q '"ok":true'; then  # 修正这行，正确使用grep
+        if echo "$result" | grep -q '"ok":true'; then
             echo "更换成功: $result"
             sudo sh -c "echo \$(date): 更换成功 >> /root/changeIP/change.log"
-            break  # 更换IP成功
+            sleep 10
+            if [ $(checkIP) == 0 ]; then
+                break  # 更换IP成功
+            fi
         else
             echo "更换失败，等待10S进行下次尝试...: $result"
             sudo sh -c "echo \$(date): 更换失败 >> /root/changeIP/change.log"
-            sleep 10  # 在重试前等待一段时间
+            sleep 10
         fi
     done
 }
 
-if [[ "$1" == "check" ]]; then
+# 检测IP是否可以解锁媒体
+checkIP() {
     # 访问此网址，如果无法观看非自制剧，会返回"Netflix"
     title=$(curl -s https://www.netflix.com/tw/title/70143836 | grep -oP '<title>\K[^<]*')
     if [[ $title == 'Netflix' ]]; then
         echo "当前IP无法解锁Netflix，准备更换IP..."
         changeIP
+        return 0  # 返回成功
+    else
+        echo "当前IP可以解锁Netflix，无需更换IP..."
+        return 1  # 返回失败
     fi
+}
+
+if [[ "$1" == "check" ]]; then
+    echo "正在检测IP是否可以解锁媒体..."
+    checkIP
 elif [[ "$1" == "change" ]]; then
     echo "执行更换任务，准备更换IP..."
     changeIP
