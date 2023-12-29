@@ -13,6 +13,6 @@ sudo mkdir -p /root/mediaCheck && wget https://github.com/vonaxs/mediaCheck/raw/
 
 0 0 * * * /root/mediaCheck/main.sh "change"
 
-检测IP是否更换，如果IP发生了改变，检测新的IP是否可以解锁媒体
+每隔5分钟检测IP是否更换，如果IP发生了改变，检测新的IP是否可以解锁媒体
 
 */5 * * * * /root/mediaCheck/main.sh "isIPChanged"
