@@ -28,7 +28,7 @@ changeIP() {
 			#输出当前的IP
 			newIP=$(curl ip.sb)
 			sudo sh -c "echo \$(date): $newIP >> $log_file"
-
+		
 			if [[ "$oldIP" != "$newIP" ]]; then
 				if [[ $(checkIP) == 0 ]]; then
 					break  # 更换IP成功
