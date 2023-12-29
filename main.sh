@@ -13,35 +13,33 @@ changeIP() {
     for ((i = 0; i < 5; i++)); do
         result=$(curl -s "$api")
         if echo "$result" | grep -q '"ok":true'; then
-		sudo sh -c "echo \$(date)：更换成功: $result >> $log_file"
-	
-		# 获取文件行数
-		line_count=$(wc -l < "$log_file")
-	
-		# 如果行数超过阈值，覆盖文件
-		if [ "$line_count" -gt "$threshold" ]; then
-			sudo sh -c "echo \$(date)：行数超过 $threshold，文件将被覆盖。 > $log_file"
-			sudo sh -c "echo \$(date)：更换成功 >> $log_file"
-		else
-			sudo sh -c "echo \$(date)：更换成功 >> $log_file"
-		fi
+			sudo sh -c "echo \$(date)：更换成功: $result >> $log_file"
 		
-		#输出当前的IP
-		newIP=$(curl ip.sb)
-		sudo sh -c "echo \$(date)：新的IP：$newIP >> $log_file"
-		for ((x = 0; x < 5; x++)); do
-			if [[ "$oldIP" != "$newIP" ]]; then
-				if [[ $(checkIP) == 0 ]]; then
-					break 2  # 更换IP成功
-				else
-					sudo sh -c "echo \$(date)：IP无法解锁，再次尝试更换... >> $log_file"
-					sleep 60  # 在重试前等待一段时间
-				fi
+			# 获取文件行数
+			line_count=$(wc -l < "$log_file")
+		
+			# 如果行数超过阈值，覆盖文件
+			if [ "$line_count" -gt "$threshold" ]; then
+				sudo tee -a "$log_file" <<< "$(date +"%Y-%m-%d %H:%M:%S"): 行数超过 $threshold，文件将被覆盖。"
 			fi
-			sleep 10
-		done
+			sudo sh -c "echo \$(date)：更换成功 >> $log_file"
+			
+			#输出当前的IP
+			newIP=$(curl ip.sb)
+			sudo tee -a "$log_file" <<< "$(date +"%Y-%m-%d %H:%M:%S"): 新的IP：$newIP"
+			for ((x = 0; x < 5; x++)); do
+				if [[ "$oldIP" != "$newIP" ]]; then
+					if [[ $(checkIP) == 0 ]]; then
+						break 2  # 更换IP成功
+					else
+						sudo tee -a "$log_file" <<< "$(date +"%Y-%m-%d %H:%M:%S"): IP无法解锁，再次尝试更换..."
+						sleep 60  # 在重试前等待一段时间
+					fi
+				fi
+				sleep 10
+			done
         else
-            sudo sh -c "echo \$(date): 更换失败，等待下次尝试... >> /root/mediaCheck/change.log"
+			sudo tee -a "$log_file" <<< "$(date +"%Y-%m-%d %H:%M:%S"): 更换失败，等待下次尝试..."
             sleep 60  # 在重试前等待一段时间
         fi
     done
