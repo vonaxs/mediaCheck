@@ -25,11 +25,11 @@ checkIP() {
     # 访问此网址，如果无法观看非自制剧，会返回"Netflix"
     title=$(curl -s https://www.netflix.com/tw/title/70143836 | grep -oP '<title>\K[^<]*')
     if [[ $title == 'Netflix' ]]; then
-		sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
+	sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
         echo "当前IP无法解锁Netflix，准备更换IP..."
         changeIP
     else
-		sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
+	sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
         echo "当前IP可以解锁Netflix，无需更换IP..."
     fi
 }
