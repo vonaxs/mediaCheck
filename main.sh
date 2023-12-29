@@ -9,11 +9,11 @@ sudo sh -c "echo \$(date)：当前IP：$oldIP >> $log_file"
 
 # 更换IP
 changeIP() {
-	sudo sh -c "echo \$(date)：正在更换IP >> $log_file"
+    sudo sh -c "echo \$(date)：正在更换IP >> $log_file"
     api=$(cat /root/mediaCheck/.api)
     for ((i = 0; i < 5; i++)); do
         result=$(curl -s "$api")
-		if ! echo "$result" | grep -q '"ok":true'; then
+        if ! echo "$result" | grep -q '"ok":true'; then
             sudo sh -c "echo \$(date): 更换失败，等待 60 秒后重试... >> $log_file"
             sleep 60 
         fi
@@ -39,8 +39,8 @@ isIPchanged() {
     oidIP=$(cat /root/mediaCheck/ip.txt)
 	newIP=$(curl ip.sb)
     if [[ -n $oidIP && $oidIP != $newIP ]]; then
-		sudo sh -c "echo \$(date)：$newIP > $ip_file"
-		sudo sh -c "echo \$(date)：IP发生了改变，检测新的IP是否可以解锁媒体... >> $log_file"
+	sudo sh -c "echo \$(date)：$newIP > $ip_file"
+	sudo sh -c "echo \$(date)：IP发生了改变，检测新的IP是否可以解锁媒体... >> $log_file"
         checkIP
     fi
 }
@@ -77,7 +77,7 @@ elif [[ "$1" == "install" ]]; then
     sudo touch /root/mediaCheck/.api
     sudo touch /root/mediaCheck/ip.txt
     echo "$api" | sudo tee /root/mediaCheck/.api > /dev/null
-	echo "API已经保存，安装完成"
+    echo "API已经保存，安装完成"
 else
     echo "脚本参数不正确，退出脚本。"
 fi
