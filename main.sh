@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+# 更换IP
 changeIP() {
     api=$(cat /root/changeIP/.api)
     for ((i = 0; i < 5; i++)); do
@@ -18,6 +19,7 @@ changeIP() {
 }
 
 if [[ "$1" == "check" ]]; then
+    # 访问此网址，如果无法观看非自制剧，会返回"Netflix"
     title=$(curl -s https://www.netflix.com/tw/title/70143836 | grep -oP '<title>\K[^<]*')
     if [[ $title == 'Netflix' ]]; then
         echo "当前IP无法解锁Netflix，准备更换IP..."
