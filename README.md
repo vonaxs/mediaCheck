@@ -15,6 +15,13 @@ sudo mkdir -p /root/mediaCheck && wget https://github.com/vonaxs/mediaCheck/raw/
 
 如果需要修改定时任务，修改main.sh最底部的定时任务的代码即可。
 
+
+查看日志
+
+cat /root/mediaCheck/change.log
+
 删除脚本：
 
 rm -rf /root/mediaCheck
+
+
