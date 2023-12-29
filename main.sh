@@ -102,7 +102,7 @@ elif [[ "$1" == "install" ]]; then
         (crontab -l ; echo "*/5 * * * * /root/mediaCheck/main.sh 'isIPChanged'") | crontab -
     fi
 	(crontab -l ; echo "0 0 * * * /root/mediaCheck/main.sh 'change'") | crontab -
-	(crontab -l ; echo "0 * * * * /root/mediaCheck/main.sh 'check'") | crontab -
+	(crontab -l ; echo "10 * * * * /root/mediaCheck/main.sh 'check'") | crontab -
     echo "安装完成"
 else
     echo "脚本参数不正确，退出脚本。"
