@@ -4,7 +4,6 @@ set -e
 log_file="/root/mediaCheck/change.log"
 ip_file="/root/mediaCheck/ip.txt"
 threshold=100	# 如果行数超过阈值，覆盖文件
-oldIP=$(curl ip.sb)
 
 # 更换IP
 changeIP() {
@@ -36,10 +35,10 @@ checkIP() {
 
 # 检测IP是否更换，如果IP发生了改变，检测新的IP是否可以解锁媒体
 isIPChanged() {
-    oidIP=$(cat /root/mediaCheck/ip.txt)
+    oldIP=$(cat /root/mediaCheck/ip.txt)
     newIP=$(curl ip.sb)
-    if [[ -n $oidIP ]]; then
-	if [[ $oidIP != $newIP ]]; then
+    if [[ -n $oldIP ]]; then
+	if [[ $oldIP != $newIP ]]; then
             sudo sh -c "echo $newIP > $ip_file"
             sudo sh -c "echo \$(date)：IP发生了改变，检测新的IP是否可以解锁媒体... >> $log_file"
             checkIP
