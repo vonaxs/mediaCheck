@@ -25,11 +25,11 @@ checkIP() {
     # 访问此网址，如果无法观看非自制剧，会返回"Netflix"
     title=$(curl -s https://www.netflix.com/tw/title/70143836 | grep -oP '<title>\K[^<]*')
     if [[ $title == 'Netflix' ]]; then
-	sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
+		sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
         echo "当前IP无法解锁Netflix，准备更换IP..."
         changeIP
     else
-	sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
+		sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
         echo "当前IP可以解锁Netflix，无需更换IP..."
     fi
 }
@@ -39,13 +39,13 @@ isIPChanged() {
     oidIP=$(cat /root/mediaCheck/ip.txt)
     newIP=$(curl ip.sb)
     if [[ -n $oidIP ]]; then
-	if [[ $oidIP != $newIP ]]; then
-	sudo sh -c "echo $newIP > $ip_file"
-	sudo sh -c "echo \$(date)：IP发生了改变，检测新的IP是否可以解锁媒体... >> $log_file"
-	checkIP
-	fi
+		if [[ $oidIP != $newIP ]]; then
+			sudo sh -c "echo $newIP > $ip_file"
+			sudo sh -c "echo \$(date)：IP发生了改变，检测新的IP是否可以解锁媒体... >> $log_file"
+			checkIP
+		fi
     else
-	sudo sh -c "echo $newIP > $ip_file"
+		sudo sh -c "echo $newIP > $ip_file"
     fi
 }
 
@@ -54,7 +54,7 @@ clearLog() {
 	if [ -e "$log_file" ]; then
 	    line_count=$(wc -l < "$log_file")		# 获取文件行数
 	    if [ "$line_count" -gt "$threshold" ]; then
-		sudo sh -c "echo -n > $log_file"  # 清空文件
+			sudo sh -c "echo -n > $log_file"  # 清空文件
 	    fi
 	else
 	    sudo touch "$log_file"
