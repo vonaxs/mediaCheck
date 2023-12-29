@@ -35,8 +35,8 @@ changeIP() {
 				if [[ $(checkIP) == 0 ]]; then
 					break 2  # 更换IP成功
 				else
-                                        echo "IP无法解锁，再次尝试更换...：$result"
-                                        sleep 60  # 在重试前等待一段时间
+					echo "IP无法解锁，再次尝试更换...：$result"
+					sleep 60  # 在重试前等待一段时间
 				fi
 			fi
 			sleep 10
