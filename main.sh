@@ -2,18 +2,18 @@
 set -e
 
 log_file="/root/mediaCheck/change.log"
+ip_file="/root/mediaCheck/ip.txt"
 threshold=100	# 如果行数超过阈值，覆盖文件
 oldIP=$(curl ip.sb)
-echo "旧IP: $oldIP"
-sudo sh -c "echo \$(date)：$oldIP >> $log_file"
+sudo sh -c "echo \$(date)：当前IP：$oldIP >> $log_file"
 
 # 更换IP
 changeIP() {
-    sudo sh -c "echo \$(date)：正在更换IP >> $log_file"
+	sudo sh -c "echo \$(date)：正在更换IP >> $log_file"
     api=$(cat /root/mediaCheck/.api)
     for ((i = 0; i < 5; i++)); do
         result=$(curl -s "$api")
-        if ! echo "$result" | grep -q '"ok":true'; then
+		if ! echo "$result" | grep -q '"ok":true'; then
             sudo sh -c "echo \$(date): 更换失败，等待 60 秒后重试... >> $log_file"
             sleep 60 
         fi
@@ -25,14 +25,23 @@ checkIP() {
     # 访问此网址，如果无法观看非自制剧，会返回"Netflix"
     title=$(curl -s https://www.netflix.com/tw/title/70143836 | grep -oP '<title>\K[^<]*')
     if [[ $title == 'Netflix' ]]; then
-        sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
+		sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
         echo "当前IP无法解锁Netflix，准备更换IP..."
         changeIP
-        return 0  # 返回成功
     else
-        sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
+		sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
         echo "当前IP可以解锁Netflix，无需更换IP..."
-        return 1  # 返回失败
+    fi
+}
+
+# 检测IP是否更换，如果IP发生了改变，检测新的IP是否可以解锁媒体
+isIPchanged() {
+    oidIP=$(cat /root/mediaCheck/ip.txt)
+	newIP=$(curl ip.sb)
+    if [[ -n $oidIP && $oidIP != $newIP ]]; then
+		sudo sh -c "echo \$(date)：$newIP > $ip_file"
+		sudo sh -c "echo \$(date)：IP发生了改变，检测新的IP是否可以解锁媒体... >> $log_file"
+        checkIP
     fi
 }
 
@@ -66,8 +75,9 @@ elif [[ "$1" == "install" ]]; then
     done
     sudo touch /root/mediaCheck/change.log
     sudo touch /root/mediaCheck/.api
+    sudo touch /root/mediaCheck/ip.txt
     echo "$api" | sudo tee /root/mediaCheck/.api > /dev/null
-    echo "API已经保存，安装完成"
+	echo "API已经保存，安装完成"
 else
     echo "脚本参数不正确，退出脚本。"
 fi
