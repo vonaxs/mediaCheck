@@ -3,23 +3,19 @@ set -e
 
 # 更换IP
 changeIP() {
-    api=$(cat /root/changeIP/.api)
+    api=$(cat /root/mediaCheck/.api)
     for ((i = 0; i < 5; i++)); do
         result=$(curl -s "$api")
         if echo "$result" | grep -q '"ok":true'; then
             echo "更换成功: $result"
-            sudo sh -c "echo \$(date): 更换成功 >> /root/changeIP/change.log"
-	    #等待10秒钟，检测新IP是否可以解锁媒体，如果解锁成功，则退出循环
-            sleep 10
+            sudo sh -c "echo \$(date): 更换成功 >> /root/mediaCheck/change.log"
             if [ $(checkIP) == 0 ]; then
                 break  # 更换IP成功
-            else
-                sleep 30
             fi
         else
             echo "更换失败，等待10S进行下次尝试...: $result"
-            sudo sh -c "echo \$(date): 更换失败 >> /root/changeIP/change.log"
-            sleep 30
+            sudo sh -c "echo \$(date): 更换失败 >> /root/mediaCheck/change.log"
+            sleep 10  # 在重试前等待一段时间
         fi
     done
 }
@@ -66,10 +62,9 @@ elif [[ "$1" == "install" ]]; then
             echo "输入无效，请重新输入。"
         fi
     done
-    sudo mkdir -p /root/changeIP
-    sudo touch /root/changeIP/change.log
-    sudo touch /root/changeIP/.api
-    echo "$api" | sudo tee /root/changeIP/.api > /dev/null
+    sudo touch /root/mediaCheck/change.log
+    sudo touch /root/mediaCheck/.api
+    echo "$api" | sudo tee /root/mediaCheck/.api > /dev/null
 	echo "API已经保存，安装完成"
 else
     echo "脚本参数不正确，退出脚本。"
