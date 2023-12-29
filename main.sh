@@ -5,11 +5,10 @@ log_file="/root/mediaCheck/change.log"
 ip_file="/root/mediaCheck/ip.txt"
 threshold=100	# 如果行数超过阈值，覆盖文件
 oldIP=$(curl ip.sb)
-sudo sh -c "echo \$(date)：当前IP：$oldIP >> $log_file"
 
 # 更换IP
 changeIP() {
-    sudo sh -c "echo \$(date)：正在更换IP >> $log_file"
+    sudo sh -c "echo \$(date)：正在更换IP... >> $log_file"
     api=$(cat /root/mediaCheck/.api)
     for ((i = 0; i < 5; i++)); do
         result=$(curl -s "$api")
@@ -22,6 +21,7 @@ changeIP() {
 
 # 检测IP是否可以解锁媒体
 checkIP() {
+    sudo sh -c "echo \$(date)：正在检测IP是否可以解锁媒体... >> $log_file"
     # 访问此网址，如果无法观看非自制剧，会返回"Netflix"
     title=$(curl -s https://www.netflix.com/tw/title/70143836 | grep -oP '<title>\K[^<]*')
     if [[ $title == 'Netflix' ]]; then
