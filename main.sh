@@ -4,6 +4,7 @@ set -e
 log_file="/root/mediaCheck/change.log"
 threshold=100	# 如果行数超过阈值，覆盖文件
 oldIP=$(curl ip.sb)
+echo "旧IP: $oldIP"
 sudo sh -c "echo \$(date): $oldIP >> $log_file"
 
 # 更换IP
@@ -27,6 +28,7 @@ changeIP() {
 		
 		#输出当前的IP
 		newIP=$(curl ip.sb)
+		echo "新的IP: $newIP"
 		sudo sh -c "echo \$(date): $newIP >> $log_file"
 	
 		if [[ "$oldIP" != "$newIP" ]]; then
