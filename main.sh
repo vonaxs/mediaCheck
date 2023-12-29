@@ -48,8 +48,10 @@ isIPChanged() {
 	sudo sh -c "echo \$(date)：$newIP > $ip_file"
     fi
 }
-
-if [[ "$1" == "check" ]]; then
+if [[ "$1" == "isIPChanged" ]]; then
+    echo "正在检测IP是否发生了改变..."
+    isIPChanged
+elif [[ "$1" == "check" ]]; then
     echo "正在检测IP是否可以解锁媒体..."
     checkIP
 elif [[ "$1" == "change" ]]; then
