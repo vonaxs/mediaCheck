@@ -41,7 +41,7 @@ wget https://github.com/vonaxs/mediaCheck/raw/main/check.sh -O /root/mediaCheck/
 chmod +x /root/mediaCheck/check.sh
 
 if [ -z "$(crontab -l)" ]; then
-    (echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
+    (echo "*/10 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
 else
     (crontab -l ; echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
 fi
