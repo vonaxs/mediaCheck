@@ -23,6 +23,8 @@ while true; do
         echo "输入无效，请重新输入。"
     fi
 done
+
+# 创建储存日志，API等数据的文件
 sudo touch /root/mediaCheck/change.log
 sudo touch /root/mediaCheck/.api
 sudo touch /root/mediaCheck/isIPChanged.txt
