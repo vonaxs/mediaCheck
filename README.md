@@ -5,6 +5,10 @@
 
 sudo mkdir -p /root/mediaCheck && wget https://github.com/vonaxs/mediaCheck/raw/main/main.sh -O /root/mediaCheck/main.sh && chmod +x /root/mediaCheck/main.sh && /root/mediaCheck/main.sh "install"
 
+更新脚本：
+
+wget https://github.com/vonaxs/mediaCheck/raw/main/main.sh -O /root/mediaCheck/main.sh && chmod +x /root/mediaCheck/main.sh
+
 该代码会实现以下功能：
 
 1.每天定时更换一次IP
