@@ -44,6 +44,8 @@ wget https://github.com/vonaxs/mediaCheck/raw/main/check.sh -O /root/mediaCheck/
 chmod +x /root/mediaCheck/check.sh
 
 # 创建定时任务
+# 如果定时任务为空，直接创建，否则追加
+# 如果任务不存在，则创建
 if [ -z "$(crontab -l)" ]; then
     (echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
 else
@@ -51,14 +53,12 @@ else
         (crontab -l ; echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
     fi
 fi
-
 if ! crontab -l | grep -q "/root/mediaCheck/change.sh"; then
     (crontab -l ; echo "*/5 * * * * /root/mediaCheck/change.sh") | crontab -
 fi
 if ! crontab -l | grep -q "/root/mediaCheck/check.sh"; then
     (crontab -l ; echo "*/5 * * * * /root/mediaCheck/check.sh") | crontab -
 fi
-
 
 echo "安装完成"
 
