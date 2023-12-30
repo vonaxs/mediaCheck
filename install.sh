@@ -45,8 +45,8 @@ if [ -z "$(crontab -l)" ]; then
 else
     (crontab -l ; echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
 fi
-(crontab -l ; echo "0 0 * * * /root/mediaCheck/change.sh") | crontab -
-(crontab -l ; echo "10 * * * * /root/mediaCheck/check.sh") | crontab -
+(crontab -l ; echo "0 0 * * * /root/mediaCheck/changeIP.sh") | crontab -
+(crontab -l ; echo "10 * * * * /root/mediaCheck/checkIP.sh") | crontab -
 echo "安装完成"
 
 
