@@ -4,24 +4,24 @@ set -e
 # 主函数
 # 检查是否已经安装了curl
 if ! command -v curl &> /dev/null; then
-echo "curl 未安装，正在安装..."
-# 安装sudo
-apt-get update
-apt-get install -y curl
+    echo "curl 未安装，正在安装..."
+    # 安装sudo
+    apt-get update
+    apt-get install -y curl
 else
-echo "curl 已经安装。"
+    echo "curl 已经安装。"
 fi
 
 while true; do
-read -p "请输入更换IP的API：" api
-
-if [[ $api =~ ^http ]]; then
-    break  # 输入有效，跳出循环
-elif [[ -z $api ]]; then
-    exit 1 # 退出脚本，返回非零状态码
-else
-    echo "输入无效，请重新输入。"
-fi
+    read -p "请输入更换IP的API：" api
+    
+    if [[ $api =~ ^http ]]; then
+        break  # 输入有效，跳出循环
+    elif [[ -z $api ]]; then
+        exit 1 # 退出脚本，返回非零状态码
+    else
+        echo "输入无效，请重新输入。"
+    fi
 done
 sudo touch /root/mediaCheck/change.log
 sudo touch /root/mediaCheck/.api
