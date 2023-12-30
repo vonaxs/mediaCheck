@@ -1,13 +1,10 @@
 检测IP是否可以解锁Netflix非自制剧。
 同类的检测脚本比较复杂，此代码非常简单。
 
-安装脚本：
+安装/更新脚本：
 
-sudo mkdir -p /root/mediaCheck && wget https://github.com/vonaxs/mediaCheck/raw/main/main.sh -O /root/mediaCheck/main.sh && chmod +x /root/mediaCheck/main.sh && /root/mediaCheck/main.sh "install"
+sudo mkdir -p /root/mediaCheck && wget https://github.com/vonaxs/mediaCheck/raw/main/install.sh -O /root/mediaCheck/install.sh && chmod +x /root/mediaCheck/install.sh && /root/mediaCheck/install.sh
 
-更新脚本：
-
-wget https://github.com/vonaxs/mediaCheck/raw/main/main.sh -O /root/mediaCheck/main.sh && chmod +x /root/mediaCheck/main.sh
 
 该代码会实现以下功能：
 
