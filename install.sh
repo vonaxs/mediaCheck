@@ -12,6 +12,7 @@ else
     echo "curl 已经安装。"
 fi
 
+# 输入API
 while true; do
     read -p "请输入更换IP的API：" api
     
@@ -42,6 +43,7 @@ chmod +x /root/mediaCheck/change.sh
 wget https://github.com/vonaxs/mediaCheck/raw/main/check.sh -O /root/mediaCheck/check.sh
 chmod +x /root/mediaCheck/check.sh
 
+# 创建定时任务
 if [ -z "$(crontab -l)" ]; then
     (echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
 else
