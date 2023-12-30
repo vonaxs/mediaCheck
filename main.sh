@@ -2,7 +2,7 @@
 set -e
 
 log_file="/root/mediaCheck/change.log"
-ip_file="/root/mediaCheck/ip.txt"
+isIPChanged_file="/root/mediaCheck/isIPChanged.txt"
 threshold=100	# 如果行数超过阈值，覆盖文件
 
 # 更换IP
@@ -10,8 +10,10 @@ changeIP() {
     sudo sh -c "echo \$(date)：正在更换IP... >> $log_file"
     api=$(cat /root/mediaCheck/.api)
     for ((i = 0; i < 5; i++)); do
+        sudo sh -c "echo 1" > $isIPChanged_file
         result=$(curl -s "$api")
         if ! echo "$result" | grep -q '"ok":true'; then
+            sudo sh -c "echo -n > $isIPChanged_file"  # 清空文件
             sudo sh -c "echo \$(date): 更换失败，等待 60 秒后重试... $result" >> $log_file
             sleep 60 
         fi
@@ -35,16 +37,13 @@ checkIP() {
 
 # 检测IP是否更换，如果IP发生了改变，检测新的IP是否可以解锁媒体
 isIPChanged() {
-    oldIP=$(cat /root/mediaCheck/ip.txt)
-    newIP=$(curl ip.sb)
-    if [[ -n $oldIP ]]; then
-	if [[ $oldIP != $newIP ]]; then
-            sudo sh -c "echo $newIP > $ip_file"
+    isIPChanged=$(cat $isIPChanged_file)
+    if [[ -n $isIPChanged ]]; then
+	if [[ $isIPChanged == 1 ]]; then
+            sudo sh -c "echo -n > $isIPChanged_file"  # 清空文件
             sudo sh -c "echo \$(date)：IP发生了改变，检测新的IP是否可以解锁媒体... >> $log_file"
             checkIP
 	fi
-    else
-	sudo sh -c "echo $newIP > $ip_file"
     fi
 }
 
@@ -94,7 +93,7 @@ elif [[ "$1" == "install" ]]; then
     done
     sudo touch /root/mediaCheck/change.log
     sudo touch /root/mediaCheck/.api
-    sudo touch /root/mediaCheck/ip.txt
+    sudo touch /root/mediaCheck/isIPChanged.txt
     echo "$api" | sudo tee /root/mediaCheck/.api > /dev/null
     if [ -z "$(crontab -l)" ]; then
         (echo "*/5 * * * * /root/mediaCheck/main.sh 'isIPChanged'") | crontab -
