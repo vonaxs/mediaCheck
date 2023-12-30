@@ -54,10 +54,10 @@ else
     fi
 fi
 if ! crontab -l | grep -q "/root/mediaCheck/change.sh"; then
-    (crontab -l ; echo "*/5 * * * * /root/mediaCheck/change.sh") | crontab -
+    (crontab -l ; echo "0 0 * * * /root/mediaCheck/change.sh") | crontab -
 fi
 if ! crontab -l | grep -q "/root/mediaCheck/check.sh"; then
-    (crontab -l ; echo "*/5 * * * * /root/mediaCheck/check.sh") | crontab -
+    (crontab -l ; echo "10 * * * * /root/mediaCheck/check.sh") | crontab -
 fi
 
 echo "安装完成"
