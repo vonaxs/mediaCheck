@@ -59,6 +59,7 @@ clearLog() {
     fi
 }
 
+# 主函数
 if [[ "$1" == "isIPChanged" ]]; then
     echo "正在检测IP是否发生了改变..."
     isIPChanged
