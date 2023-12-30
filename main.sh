@@ -68,7 +68,7 @@ elif [[ "$1" == "check" ]]; then
     checkIP
 elif [[ "$1" == "change" ]]; then
     echo "执行更换任务，准备更换IP..."
-	clearLog
+    clearLog
     changeIP
 elif [[ "$1" == "install" ]]; then
     # 检查是否已经安装了curl
