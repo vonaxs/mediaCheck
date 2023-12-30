@@ -27,12 +27,19 @@ sudo touch /root/mediaCheck/change.log
 sudo touch /root/mediaCheck/.api
 sudo touch /root/mediaCheck/isIPChanged.txt
 echo "$api" | sudo tee /root/mediaCheck/.api > /dev/null
+
+# 下载检测IP是否改变的脚本
 wget https://github.com/vonaxs/mediaCheck/raw/main/isIPChanged.sh -O /root/mediaCheck/isIPChanged.sh
-wget https://github.com/vonaxs/mediaCheck/raw/main/change.sh -O /root/mediaCheck/change.sh
-wget https://github.com/vonaxs/mediaCheck/raw/main/check.sh -O /root/mediaCheck/check.sh
 chmod +x /root/mediaCheck/isIPChanged.sh
+
+# 下载定时更换IP的脚本
+wget https://github.com/vonaxs/mediaCheck/raw/main/change.sh -O /root/mediaCheck/change.sh
 chmod +x /root/mediaCheck/change.sh
+
+# 下载定时检测IP的脚本
+wget https://github.com/vonaxs/mediaCheck/raw/main/check.sh -O /root/mediaCheck/check.sh
 chmod +x /root/mediaCheck/check.sh
+
 if [ -z "$(crontab -l)" ]; then
     (echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
 else
@@ -41,4 +48,8 @@ fi
 (crontab -l ; echo "0 0 * * * /root/mediaCheck/change.sh") | crontab -
 (crontab -l ; echo "10 * * * * /root/mediaCheck/check.sh") | crontab -
 echo "安装完成"
+
+
+
+
 
