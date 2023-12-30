@@ -47,10 +47,19 @@ chmod +x /root/mediaCheck/check.sh
 if [ -z "$(crontab -l)" ]; then
     (echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
 else
-    (crontab -l ; echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
+    if ! crontab -l | grep -q "/root/mediaCheck/isIPChanged.sh"; then
+        (crontab -l ; echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
+    fi
 fi
-(crontab -l ; echo "0 0 * * * /root/mediaCheck/change.sh") | crontab -
-(crontab -l ; echo "10 * * * * /root/mediaCheck/check.sh") | crontab -
+
+if ! crontab -l | grep -q "/root/mediaCheck/change.sh"; then
+    (crontab -l ; echo "*/5 * * * * /root/mediaCheck/change.sh") | crontab -
+fi
+if ! crontab -l | grep -q "/root/mediaCheck/check.sh"; then
+    (crontab -l ; echo "*/5 * * * * /root/mediaCheck/check.sh") | crontab -
+fi
+
+
 echo "安装完成"
 
 
