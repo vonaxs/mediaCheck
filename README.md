@@ -14,7 +14,7 @@ sudo mkdir -p /root/mediaCheck && wget https://github.com/vonaxs/mediaCheck/raw/
 
 3.每隔5分钟检测一次IP是否发生了改变，如果改变了，那么就检测新的IP是否可以解锁媒体
 
-如果需要修改定时任务，修改main.sh最底部的定时任务的代码即可。
+如果需要修改定时任务，修改install.sh最底部的定时任务的代码即可。
 
 
 查看日志
