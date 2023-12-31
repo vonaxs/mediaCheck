@@ -33,7 +33,7 @@ checkIP() {
 	    if [[ $title == 'Netflix' ]]; then
 	        sudo sh -c "echo \$(date)：当前IP无法解锁Netflix >> $log_file"
 	        echo "当前IP无法解锁Netflix"
-	        ((netflix_count++))            # 如果Netflix出现，增加计数器
+	        netflix_count=$((netflix_count + 1))         # 如果Netflix出现，增加计数器
 	 	echo "$netflix_count"
 	    else
 	        sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
