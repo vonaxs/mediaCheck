@@ -37,6 +37,7 @@ checkIP() {
 	    else
 	        sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
 	        echo "当前IP可以解锁Netflix，无需更换IP..."
+	 	break
 	    fi
 	    sleep 30
     done
