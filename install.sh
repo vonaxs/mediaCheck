@@ -12,18 +12,21 @@ else
     echo "curl 已经安装。"
 fi
 
-# 输入API
-while true; do
-    read -p "请输入更换IP的API：" api
-    
-    if [[ $api =~ ^http ]]; then
-        break  # 输入有效，跳出循环
-    elif [[ -z $api ]]; then
-        exit 1 # 退出脚本，返回非零状态码
-    else
-        echo "输入无效，请重新输入。"
-    fi
-done
+api=$(cat /root/mediaCheck/.api)
+if [ -z "$api" ]; then
+    # 输入API
+    while true; do
+        read -p "请输入更换IP的API：" api
+        
+        if [[ $api =~ ^http ]]; then
+            break  # 输入有效，跳出循环
+        elif [[ -z $api ]]; then
+            exit 1 # 退出脚本，返回非零状态码
+        else
+            echo "输入无效，请重新输入。"
+        fi
+    done
+fi
 
 # 创建储存日志，API等数据的文件
 sudo touch /root/mediaCheck/change.log
