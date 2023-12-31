@@ -20,11 +20,10 @@ changeIP() {
     done
 }
 
-# 检测日志是否太大，如果太大，则清空
+# 每月1号清空日志
 clearLog() {
     if [ -e "$log_file" ]; then
-        line_count=$(wc -l < "$log_file")		# 获取文件行数
-        if [ "$line_count" -gt "$threshold" ]; then
+        if [ "$(date +"%d")" -eq 1 ]; then
             sudo sh -c "echo -n > $log_file"  # 清空文件
         fi
     else
