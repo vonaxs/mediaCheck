@@ -34,6 +34,7 @@ checkIP() {
 	        sudo sh -c "echo \$(date)：当前IP无法解锁Netflix >> $log_file"
 	        echo "当前IP无法解锁Netflix"
 	        ((netflix_count++))            # 如果Netflix出现，增加计数器
+	 	echo "$netflix_count"
 	    else
 	        sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
 	        echo "当前IP可以解锁Netflix，无需更换IP..."
@@ -43,7 +44,7 @@ checkIP() {
     done
 	
     # 检查计数器是否达到3次
-    if [ $netflix_count == 3 ]; then
+    if [ $netflix_count -eq 3 ]; then
         sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，连续出现3次，准备更换IP... >> $log_file"
         echo "当前IP无法解锁Netflix，连续出现3次，准备更换IP..."
         changeIP
