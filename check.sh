@@ -56,5 +56,6 @@ random_number=$((RANDOM % 10))
 # 随机检测，避免Netflix识别在定时检测
 if [ "$random_number" -eq 0 ]; then
     echo "正在检测IP是否可以解锁媒体..."
+    sleep $random_number
     checkIP
 fi
