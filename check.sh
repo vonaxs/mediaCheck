@@ -52,9 +52,9 @@ checkIP() {
 }
 
 # 主函数
-random_number=$((RANDOM % 12 + 1))
-# 判断随机数字是否等于1，随机检测，避免Netflix识别在定时检测
-if [ "$random_number" -eq 1 ]; then
+random_number=$((RANDOM % 10))
+# 随机检测，避免Netflix识别在定时检测
+if [ "$random_number" -eq 0 ]; then
     echo "正在检测IP是否可以解锁媒体..."
     checkIP
 fi
