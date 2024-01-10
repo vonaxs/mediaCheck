@@ -12,6 +12,12 @@ else
     echo "curl 已经安装。"
 fi
 
+# 创建储存日志，API等数据的文件
+sudo touch /root/mediaCheck/change.log
+sudo touch /root/mediaCheck/.api
+sudo touch /root/mediaCheck/isIPChanged.txt
+
+# 输入API
 api=$(cat /root/mediaCheck/.api)
 if [ -z "$api" ]; then
     # 输入API
@@ -28,10 +34,7 @@ if [ -z "$api" ]; then
     done
 fi
 
-# 创建储存日志，API等数据的文件
-sudo touch /root/mediaCheck/change.log
-sudo touch /root/mediaCheck/.api
-sudo touch /root/mediaCheck/isIPChanged.txt
+# 储存API
 echo "$api" | sudo tee /root/mediaCheck/.api > /dev/null
 
 # 下载检测IP是否改变的脚本
