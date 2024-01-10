@@ -14,11 +14,11 @@ fi
 
 # 创建储存日志，API等数据的文件
 sudo touch /root/mediaCheck/change.log
-sudo touch /root/mediaCheck/.api
+sudo touch /root/mediaCheck/api.txt
 sudo touch /root/mediaCheck/isIPChanged.txt
 
 # 输入API
-api=$(cat /root/mediaCheck/.api)
+api=$(cat /root/mediaCheck/api.txt)
 if [ -z "$api" ]; then
     # 输入API
     while true; do
@@ -35,7 +35,7 @@ if [ -z "$api" ]; then
 fi
 
 # 储存API
-echo "$api" | sudo tee /root/mediaCheck/.api > /dev/null
+echo "$api" | sudo tee /root/mediaCheck/api.txt > /dev/null
 
 # 下载检测IP是否改变的脚本
 wget https://github.com/vonaxs/mediaCheck/raw/main/isIPChanged.sh -O /root/mediaCheck/isIPChanged.sh
