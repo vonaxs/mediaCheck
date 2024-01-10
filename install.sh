@@ -53,19 +53,19 @@ chmod +x /root/mediaCheck/check.sh
 # 如果定时任务为空，直接创建，否则追加
 # 如果任务不存在，则创建
 if [ -z "$(crontab -l)" ]; then
-    (echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
+    (echo "0 0 * * * /root/mediaCheck/change.sh") | crontab -
 else
-    if ! crontab -l | grep -q "/root/mediaCheck/isIPChanged.sh"; then
-        (crontab -l ; echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
+    if ! crontab -l | grep -q "/root/mediaCheck/change.sh"; then
+        (crontab -l ; echo "0 0 * * * * /root/mediaCheck/change.sh") | crontab -
     fi
 fi
-if ! crontab -l | grep -q "/root/mediaCheck/change.sh"; then
-    (crontab -l ; echo "0 0 * * * /root/mediaCheck/change.sh") | crontab -
+if ! crontab -l | grep -q "/root/mediaCheck/isIPChangedchange.sh"; then
+    (crontab -l ; echo "*/5 * * * * /root/mediaCheck/isIPChangedchange.sh") | crontab -
 fi
-#每5分钟检测一次，但不是真的5分钟检测一次，只是可能检测一次，避免Netflix识别在定时检测
-if ! crontab -l | grep -q "/root/mediaCheck/check.sh"; then
-    (crontab -l ; echo "*/5 * * * * /root/mediaCheck/check.sh") | crontab -
-fi
+# 每5分钟检测一次，但不是真的5分钟检测一次，只是可能检测一次，避免Netflix识别在定时检测
+# if ! crontab -l | grep -q "/root/mediaCheck/check.sh"; then
+#     (crontab -l ; echo "*/5 * * * * /root/mediaCheck/check.sh") | crontab -
+# fi
 
 echo "安装完成"
 
