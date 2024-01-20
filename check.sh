@@ -8,7 +8,7 @@ threshold=100	# 如果行数超过阈值，覆盖文件
 # 更换IP
 changeIP() {
     sudo sh -c "echo \$(date)：正在更换IP... >> $log_file"
-    api=$(cat /root/mediaCheck/.api)
+    api=$(cat /root/mediaCheck/api.txt)
     for ((i = 0; i < 5; i++)); do
         sudo sh -c "echo 1" > $isIPChanged_file
         result=$(curl -s "$api")
