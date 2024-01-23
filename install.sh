@@ -59,7 +59,7 @@ else
         (crontab -l ; echo "0 0 * * * * /root/mediaCheck/change.sh") | crontab -
     fi
 fi
-if ! crontab -l | grep -q "/root/mediaCheck/isIPChangedchange.sh"; then
+if ! crontab -l | grep -q "/root/mediaCheck/isIPChanged.sh"; then
     (crontab -l ; echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
 fi
 # 每5分钟检测一次，但不是真的5分钟检测一次，只是可能检测一次，避免Netflix识别在定时检测
