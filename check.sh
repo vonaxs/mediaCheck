@@ -3,6 +3,7 @@ set -e
 
 log_file="/root/mediaCheck/change.log"
 isIPChanged_file="/root/mediaCheck/isIPChanged.txt"
+checkTime_file="/root/mediaCheck/checkTime.txt"
 threshold=500	# 如果行数超过阈值，覆盖文件
 
 # 更换IP
@@ -52,11 +53,16 @@ checkIP() {
 }
 
 # 主函数
-random_number=$((RANDOM % 10))
+checkTime=$(cat "$checkTime_file")
 # 随机检测，避免Netflix识别在定时检测
-if [ "$random_number" -eq 0 ]; then
+if [ "$checkTime" -gt $(date +%s) ]; then
     echo "正在检测IP是否可以解锁媒体..."
-    sleep $random_number
+
+    # 将当前时间戳+一个随机数写入文件
+    random_number=$(($(date +%s) + $((RANDOM % 3600))))
+    sudo sh -c "echo $random_number > $checkTime_file"
+
+    # 调用checkIP函数
     checkIP
 fi
 
