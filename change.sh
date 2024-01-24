@@ -3,7 +3,7 @@ set -e
 
 log_file="/root/mediaCheck/change.log"
 isIPChanged_file="/root/mediaCheck/isIPChanged.txt"
-threshold=100	# 如果行数超过阈值，覆盖文件
+threshold=500	# 如果行数超过阈值，覆盖文件
 
 # 更换IP
 changeIP() {
