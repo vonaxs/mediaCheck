@@ -23,5 +23,4 @@ changeIP() {
 
 # 主函数
 echo "执行更换任务，准备更换IP..."
-clearLog
 changeIP
