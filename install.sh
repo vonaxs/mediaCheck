@@ -16,6 +16,7 @@ fi
 sudo touch /root/mediaCheck/change.log
 sudo touch /root/mediaCheck/api.txt
 sudo touch /root/mediaCheck/isIPChanged.txt
+sudo touch /root/mediaCheck/checkTime.txt
 
 # 输入API
 api=$(cat /root/mediaCheck/api.txt)
