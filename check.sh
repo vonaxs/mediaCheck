@@ -59,7 +59,7 @@ if [ "$checkTime" -gt $(date +%s) ]; then
     echo "正在检测IP是否可以解锁媒体..."
 
     # 将当前时间戳+一个随机数写入文件
-    random_number=$(($(date +%s) + $((RANDOM % 3600))))
+    random_number=$(($(date +%s) + $((RANDOM % 1800 + 3600))))
     sudo sh -c "echo $random_number > $checkTime_file"
 
     # 调用checkIP函数
