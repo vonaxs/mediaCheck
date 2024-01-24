@@ -20,16 +20,6 @@ changeIP() {
     done
 }
 
-# 每月1号清空日志
-clearLog() {
-    if [ -e "$log_file" ]; then
-        if [ "$(date +"%d")" -eq 1 ]; then
-            sudo sh -c "echo -n > $log_file"  # 清空文件
-        fi
-    else
-        sudo touch "$log_file"
-    fi
-}
 
 # 主函数
 echo "执行更换任务，准备更换IP..."
