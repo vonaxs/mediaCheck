@@ -60,7 +60,7 @@ if [ -z "$checkTime" ] || [ "$(date +%s)" -gt "$checkTime" ]; then
 
     # 将当前时间戳+一个随机数写入文件
     sleep $((RANDOM % 300))
-    random_number=$(($(date +%s) + $((RANDOM % 1800 + 3600))))
+    random_number=$(($(date +%s) + $((RANDOM % 1800))))
     sudo sh -c "echo $random_number > $checkTime_file"
 
     # 调用checkIP函数
