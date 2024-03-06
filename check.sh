@@ -28,7 +28,8 @@ checkIP() {
 
 	# 执行命令并将输出保存到变量中
 	output=$(echo 1 | bash <(curl -L -s check.unlock.media) -M 4)
-	
+	echo $output
+ 
 	# 分析输出结果是否包含 "Netflix:				Yes"
 	if [[ $output == *"Netflix:				Yes"* ]]; then
 		sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
