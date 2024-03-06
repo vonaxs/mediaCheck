@@ -26,11 +26,11 @@ checkIP() {
 	sudo sh -c "echo \$(date)：正在检测IP是否可以解锁媒体... >> $log_file"
 	# 访问此网址，如果无法观看非自制剧，会返回"Netflix"
 
-	# 使用 Here Document 模拟输入
-	output=$(bash <(curl -L -s check.unlock.media) -M 4 <<EOF
-	1
-	EOF
-	)
+# 使用 Here Document 模拟输入
+output=$(bash <(curl -L -s check.unlock.media) -M 4 <<EOF
+1
+EOF
+)
 
 	# 分析输出结果是否包含 "Netflix:				Yes"
 	if [[ $output == *"Netflix:				Yes"* ]]; then
