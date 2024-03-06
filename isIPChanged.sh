@@ -27,17 +27,14 @@ checkIP() {
 
 	# 执行命令并将输出保存到变量中
 	output=$(echo 1 | bash <(curl -L -s check.unlock.media) -M 4)
-	
+	echo $output
+ 
 	# 分析输出结果是否包含 "Netflix:				Yes"
 	if [[ $output == *"Netflix:				Yes"* ]]; then
 		sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
-		echo "当前IP可以解锁Netflix，无需更换IP..."
+		echo "当前IP可以解锁Netflix，无需更换IP"
 		break
 	else
-		sudo sh -c "echo \$(date)：当前IP无法解锁Netflix >> $log_file"
-		echo "当前IP无法解锁Netflix"
-		netflix_count=$((netflix_count + 1))         # 如果Netflix出现，增加计数器
-		echo "$netflix_count"
 		sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
 		echo "当前IP无法解锁Netflix，准备更换IP..."
 		changeIP
