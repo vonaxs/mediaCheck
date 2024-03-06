@@ -1,5 +1,7 @@
+
 检测IP是否可以解锁Netflix非自制剧。
-同类的检测脚本比较复杂，此代码非常简单。
+引用的原作者脚本来源：
+https://github.com/lmc999/RegionRestrictionCheck
 
 安装/更新脚本：
 
