@@ -38,7 +38,7 @@ checkIP() {
 	else
 		sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
 		echo "当前IP无法解锁Netflix，准备更换IP..."
-		changeIP
+		
 	fi
 }
 
