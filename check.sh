@@ -23,33 +23,26 @@ changeIP() {
 
 # 检测IP是否可以解锁媒体
 checkIP() {
-    # 初始化计数器
-    netflix_count=0
+	sudo sh -c "echo \$(date)：正在检测IP是否可以解锁媒体... >> $log_file"
+	# 访问此网址，如果无法观看非自制剧，会返回"Netflix"
 
-    # 循环检测3次
-    for ((i = 0; i < 3; i++)); do
-	    sudo sh -c "echo \$(date)：正在检测IP是否可以解锁媒体... >> $log_file"
-	    # 访问此网址，如果无法观看非自制剧，会返回"Netflix"
-	    title=$(curl -s https://www.netflix.com/tw/title/70143836 | grep -oP '<title>\K[^<]*')
-	    if [[ $title == 'Netflix' ]]; then
-	        sudo sh -c "echo \$(date)：当前IP无法解锁Netflix >> $log_file"
-	        echo "当前IP无法解锁Netflix"
-	        netflix_count=$((netflix_count + 1))         # 如果Netflix出现，增加计数器
-	 	echo "$netflix_count"
-	    else
-	        sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
-	        echo "当前IP可以解锁Netflix，无需更换IP..."
-	 	break
-	    fi
-	    sleep 30
-    done
+	# 执行命令并将输出保存到变量中
+	output=$(echo 1 | bash <(curl -L -s check.unlock.media) -M 4)
 	
-    # 检查计数器是否达到3次
-    if [ $netflix_count -eq 3 ]; then
-        sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，连续出现3次，准备更换IP... >> $log_file"
-        echo "当前IP无法解锁Netflix，连续出现3次，准备更换IP..."
-        changeIP
-    fi
+	# 分析输出结果是否包含 "Netflix:				Yes"
+	if [[ $output == *"Netflix:				Yes"* ]]; then
+		sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
+		echo "当前IP可以解锁Netflix，无需更换IP..."
+		break
+	else
+		sudo sh -c "echo \$(date)：当前IP无法解锁Netflix >> $log_file"
+		echo "当前IP无法解锁Netflix"
+		netflix_count=$((netflix_count + 1))         # 如果Netflix出现，增加计数器
+		echo "$netflix_count"
+		sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
+		echo "当前IP无法解锁Netflix，准备更换IP..."
+		changeIP
+	fi
 }
 
 # 主函数
