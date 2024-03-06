@@ -22,17 +22,26 @@ changeIP() {
 
 # 检测IP是否可以解锁媒体
 checkIP() {
-    sudo sh -c "echo \$(date)：正在检测IP是否可以解锁媒体... >> $log_file"
-    # 访问此网址，如果无法观看非自制剧，会返回"Netflix"
-    title=$(curl -s https://www.netflix.com/tw/title/70143836 | grep -oP '<title>\K[^<]*')
-    if [[ $title == 'Netflix' ]]; then
-	sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
-        echo "当前IP无法解锁Netflix，准备更换IP..."
-        changeIP
-    else
-	sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
-        echo "当前IP可以解锁Netflix，无需更换IP..."
-    fi
+	sudo sh -c "echo \$(date)：正在检测IP是否可以解锁媒体... >> $log_file"
+	# 访问此网址，如果无法观看非自制剧，会返回"Netflix"
+
+	# 执行命令并将输出保存到变量中
+	output=$(echo 1 | bash <(curl -L -s check.unlock.media) -M 4)
+	
+	# 分析输出结果是否包含 "Netflix:				Yes"
+	if [[ $output == *"Netflix:				Yes"* ]]; then
+		sudo sh -c "echo \$(date)：当前IP可以解锁Netflix，无需更换IP... >> $log_file"
+		echo "当前IP可以解锁Netflix，无需更换IP..."
+		break
+	else
+		sudo sh -c "echo \$(date)：当前IP无法解锁Netflix >> $log_file"
+		echo "当前IP无法解锁Netflix"
+		netflix_count=$((netflix_count + 1))         # 如果Netflix出现，增加计数器
+		echo "$netflix_count"
+		sudo sh -c "echo \$(date)：当前IP无法解锁Netflix，准备更换IP... >> $log_file"
+		echo "当前IP无法解锁Netflix，准备更换IP..."
+		changeIP
+	fi
 }
 
 # 检测IP是否更换，如果IP发生了改变，检测新的IP是否可以解锁媒体
