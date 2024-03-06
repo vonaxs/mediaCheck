@@ -31,6 +31,7 @@ output=$(bash <(curl -L -s check.unlock.media) -M 4 <<EOF
 1
 EOF
 )
+echo $output
 
 	# 分析输出结果是否包含 "Netflix:				Yes"
 	if [[ $output == *"Netflix:				Yes"* ]]; then
