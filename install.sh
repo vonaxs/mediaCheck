@@ -57,16 +57,16 @@ if [ -z "$(crontab -l)" ]; then
     (echo "0 0 * * * /root/mediaCheck/change.sh") | crontab -
 else
     if ! crontab -l | grep -q "/root/mediaCheck/change.sh"; then
-        (crontab -l ; echo "0 0 * * * * /root/mediaCheck/change.sh") | crontab -
+        (crontab -l ; echo "0 */8 * * * * /root/mediaCheck/change.sh") | crontab -
     fi
 fi
-if ! crontab -l | grep -q "/root/mediaCheck/isIPChanged.sh"; then
-    (crontab -l ; echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
-fi
+# if ! crontab -l | grep -q "/root/mediaCheck/isIPChanged.sh"; then
+#     (crontab -l ; echo "*/5 * * * * /root/mediaCheck/isIPChanged.sh") | crontab -
+# fi
 # 每5分钟检测一次，但不是真的5分钟检测一次，只是可能检测一次，避免Netflix识别在定时检测
-if ! crontab -l | grep -q "/root/mediaCheck/check.sh"; then
-    (crontab -l ; echo "*/5 * * * * /root/mediaCheck/check.sh") | crontab -
-fi
+# if ! crontab -l | grep -q "/root/mediaCheck/check.sh"; then
+#    (crontab -l ; echo "*/5 * * * * /root/mediaCheck/check.sh") | crontab -
+# fi
 
 echo "安装完成"
 
