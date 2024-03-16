@@ -53,7 +53,6 @@ chmod +x /root/mediaCheck/check.sh
 # 创建定时任务
 # 如果定时任务为空，直接创建，否则追加
 # 如果任务不存在，则创建
-
 if [ -z "$(crontab -l)" ]; then
     (echo "0 */8 * * * /root/mediaCheck/change.sh") | crontab -
 else
