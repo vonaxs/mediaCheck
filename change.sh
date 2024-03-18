@@ -14,9 +14,11 @@ changeIP() {
         result=$(curl -s "$api")
         if ! echo "$result" | grep -q '"ok":true'; then
             sudo sh -c "echo -n > $isIPChanged_file"  # 清空文件
+            echo "更换失败，等待 120 秒后重试... $result"
             sudo sh -c "echo \$(date): 更换失败，等待 120 秒后重试... $result" >> $log_file
             sleep 120
         elif
+            echo "更换IP成功 $result"
             sudo sh -c "echo \$(date): 更换IP成功 $result" >> $log_file
         fi
     done
