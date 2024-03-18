@@ -17,7 +17,7 @@ changeIP() {
             echo "更换失败，等待 120 秒后重试... $result"
             sudo sh -c "echo \$(date): 更换失败，等待 120 秒后重试... $result" >> $log_file
             sleep 120
-        elif
+        else
             echo "更换IP成功 $result"
             sudo sh -c "echo \$(date): 更换IP成功 $result" >> $log_file
         fi
