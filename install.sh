@@ -53,11 +53,12 @@ chmod +x /root/mediaCheck/check.sh
 # 创建定时任务
 # 如果定时任务为空，直接创建，否则追加
 # 如果任务不存在，则创建
+random_number=$((RANDOM % 60))
 if [ -z "$(crontab -l)" ]; then
-    (echo "0 */6 * * * /root/mediaCheck/change.sh") | crontab -
+    (echo "$random_number */6 * * * /root/mediaCheck/change.sh") | crontab -
 else
     if ! crontab -l | grep -q "/root/mediaCheck/change.sh"; then
-        (crontab -l ; echo "0 */6 * * * /root/mediaCheck/change.sh") | crontab -
+        (crontab -l ; echo "$random_number */6 * * * /root/mediaCheck/change.sh") | crontab -
     fi
 fi
 # if ! crontab -l | grep -q "/root/mediaCheck/isIPChanged.sh"; then
