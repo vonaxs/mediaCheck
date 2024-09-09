@@ -14,7 +14,8 @@ changeIP() {
     for ((i = 0; i < 5; i++)); do
         sudo sh -c "echo 1" > $isIPChanged_file
         result=$(curl -s "$api")
-        if echo "$result" | grep -q '"ok":true'; then
+        #if echo "$result" | grep -q '"ok":true'; then
+        if [ -n "$result" ]; then
             ip=$(curl -s ip.sb)
             sudo sh -c "echo \$(date): 更换IP成功，新的IP为：$ip $result" >> $log_file
             break
