@@ -25,7 +25,7 @@ if [ -z "$api" ]; then
     while true; do
         read -p "请输入更换IP的API：" api
         
-        if [[ $api =~ ^(curl|http) ]]; then
+        if [[ $api =~ ^http ]]; then
             break  # 输入有效，跳出循环
         elif [[ -z $api ]]; then
             exit 1 # 退出脚本，返回非零状态码
